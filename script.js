@@ -1,46 +1,60 @@
-// Sett år i footeren
-document.getElementById('year').textContent = new Date().getFullYear();
-
-
-// Telleknapp-funksjonalitet
-let count = 0;
-const countEl = document.getElementById('count');
-document.getElementById('increase').addEventListener('click', () => {
-count++;
-countEl.textContent = count;
-});
-document.getElementById('decrease').addEventListener('click', () => {
-count = Math.max(0, count - 1);
-countEl.textContent = count;
-});
-
-
-// Mørkt tema-toggle (lagres i localStorage)
-const themeToggle = document.getElementById('themeToggle');
-function applyTheme(theme){
-if(theme === 'dark') document.documentElement.classList.add('dark');
-else document.documentElement.classList.remove('dark');
+// Unik session-ID
+if (!localStorage.getItem("session_id")) {
+    localStorage.setItem("session_id", crypto.randomUUID());
 }
-const saved = localStorage.getItem('theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-applyTheme(saved);
-themeToggle.textContent = saved === 'dark' ? 'Lyst tema' : 'Mørkt tema';
 
+const sessionId = localStorage.getItem("session_id");
 
-themeToggle.addEventListener('click', () => {
-const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
-applyTheme(next);
-localStorage.setItem('theme', next);
-themeToggle.textContent = next === 'dark' ? 'Lyst tema' : 'Mørkt tema';
-});
+// AUTOMATISK LOGGING
+fetch("/auto-log", {
+    method: "POST",
+    headers: { "session-id": sessionId }
+}).then(loadLog);
 
+// LAGRE NAVN
+document.getElementById("nameForm").onsubmit = async (e) => {
+    e.preventDefault();
+    const name = new FormData(nameForm).get("name");
 
-// Enkel form-håndtering (ingen server her — bare simulerer)
-const form = document.getElementById('contactForm');
-const status = document.getElementById('formStatus');
-form.addEventListener('submit', (e) => {
-e.preventDefault();
-const data = new FormData(form);
-const name = data.get('name');
-status.textContent = `Takk, ${name}! Meldingen er sendt (lokalt).`;
-form.reset();
-});
+    await fetch("/name-log", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "session-id": sessionId
+        },
+        body: JSON.stringify({ name })
+    });
+
+    nameStatus.textContent = "Navn lagret!";
+    loadLog();
+};
+
+// HENT BESØKSLISTE
+async function loadLog() {
+    const res = await fetch("/get-log");
+    const data = await res.json();
+
+    const tbody = document.querySelector("#logTable tbody");
+    tbody.innerHTML = "";
+
+    data.forEach(r => {
+        tbody.innerHTML += `
+        <tr>
+            <td>${r.id}</td>
+            <td>${r.ip}</td>
+            <td>${r.operating_system}</td>
+            <td>${r.browser}</td>
+            <td>${r.country}</td>
+            <td>${r.city}</td>
+            <td>${r.session_id}</td>
+            <td>${r.name || ""}</td>
+            <td>${r.timestamp}</td>
+        </tr>`;
+    });
+}
+
+// TEMA
+const toggle = document.getElementById("themeToggle");
+toggle.onclick = () => {
+    document.documentElement.classList.toggle("dark");
+};

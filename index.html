@@ -3,50 +3,50 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Min enkle nettside</title>
+<title>Besøkslogg</title>
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
 <header class="site-header">
-<h1>Hei! Dette er en enkel nettside</h1>
-<button id="themeToggle" aria-label="Skru av/på mørkt tema">Mørkt tema</button>
+<h1>Besøkslogg</h1>
+<button id="themeToggle">Mørkt tema</button>
 </header>
 
-
 <main>
-<section class="card">
-<h2>Om denne siden</h2>
-<p>Denne siden viser en enkel layout med HTML, CSS og litt JavaScript for interaksjon.</p>
-</section>
-
 
 <section class="card">
-<h2>Interaktiv telling</h2>
-<div class="counter">
-<button id="decrease">−</button>
-<span id="count">0</span>
-<button id="increase">+</button>
-</div>
-</section>
-
-
-<section class="card">
-<h2>Kontakt</h2>
-<form id="contactForm">
-<label>Navn<br /><input type="text" name="name" required></label>
-<label>E‑post<br /><input type="email" name="email" required></label>
-<label>Melding<br /><textarea name="message" rows="4"></textarea></label>
-<button type="submit">Send</button>
-<p id="formStatus" class="status" aria-live="polite"></p>
+<h2>Valgfritt navn</h2>
+<form id="nameForm">
+<label>Navn:<br><input type="text" name="name"></label>
+<button type="submit">Lagre</button>
+<p id="nameStatus"></p>
 </form>
 </section>
+
+<section class="card wide">
+<h2>Besøkende</h2>
+
+<table id="logTable">
+<thead>
+<tr>
+  <th>ID</th>
+  <th>IP</th>
+  <th>OS</th>
+  <th>Nettleser</th>
+  <th>Land</th>
+  <th>By</th>
+  <th>Session</th>
+  <th>Navn</th>
+  <th>Tid</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+</section>
+
 </main>
-
-
-<footer class="site-footer">
-<p>© <span id="year"></span> Enkel nettside</p>
-</footer>
-
 
 <script src="script.js"></script>
 </body>
