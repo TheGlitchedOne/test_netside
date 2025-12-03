@@ -1,16 +1,17 @@
-:root{
---bg: #ffffff;
---card: #f6f7fb;
---text: #222;
---accent: #0066cc;
+/* 🎯 Standard lys-modus */
+:root {
+  --bg: #ffffff;
+  --card: #f3f4f6;
+  --text: #1f1f1f;
+  --accent: #0070f3;
 }
 
-
-html.dark{
---bg: #0f1720;
---card: #0b1220;
---text: #e6eef8;
---accent: #58a6ff;
+/* 🎯 Mørk modus aktivert av JS */
+html.dark {
+  --bg: #0d1117;
+  --card: #161b22;
+  --text: #e6edf3;
+  --accent: #58a6ff;
 }
 
 
@@ -56,8 +57,3 @@ input,textarea{width:100%;padding:0.5rem;border-radius:8px;border:1px solid rgba
 
 
 .site-footer{text-align:center;font-size:0.9rem;color:var(--text);opacity:0.8}
-
-
-@media (prefers-color-scheme: dark){
-:root{--bg:#0f1720;--card:#0b1220;--text:#e6eef8;--accent:#58a6ff}
-}
